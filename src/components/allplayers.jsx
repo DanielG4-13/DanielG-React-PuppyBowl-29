@@ -8,10 +8,10 @@ const AllPlayers = () => {
     const [error, setError] = useState(null);
     const [searchParam, setSearchParam] = useState("");
     const [selectedPlayer, setSelectedPlayer] = useState(null); 
-    const [newPlayer, setNewPlayer] = useState(""); 
-    const [name, setName] = useState(""); 
-    const [breed, setbreed] = useState(""); 
-    const [imgUrl, setimgUrl] = useState(""); 
+    const [newPlayer, setNewPlayer] = useState({name: "", breed: "", imgUrl: ""}); 
+    // const [name, setName] = useState(""); 
+    // const [breed, setbreed] = useState(""); 
+    // const [imgUrl, setimgUrl] = useState(""); 
 
     useEffect(() => {
         async function getAllPlayers() {
@@ -46,17 +46,22 @@ const AllPlayers = () => {
 
     const handleAddPlayer = async () => {
         try {
-            const newPlayer= {name, breed, imgUrl}
             const addedPlayer = await fetchNewPlayer(newPlayer);
-            console.log("Player added successfully:", addedPlayer);
-            setNewPlayer(addedPlayer); 
+            if (addedPlayer.success) {
+                const updatedPlayer= await fetchAllPlayers();
+                setPlayers(updatedPlayer.data.players);
+                setNewPlayer({name: "", breed: "", imgUrl: ""})
+            }
+            else {
+                console.error(error)
+            }
         } catch (error) {
             console.error("Failed to add player:", error);
         }
     };
 
     const handleNewPlayerChange = (e) => {
-        const { name, value } = e.target.name;
+        const { name, value } = e.target;
         setNewPlayer( player => ({
             ...player,
             [name]: value,
@@ -122,19 +127,19 @@ const AllPlayers = () => {
                             onChange={handleNewPlayerChange}
                         /> */}
                         <input
-                        type="img"
+                        type="text"
                         name="imgUrl"
                         placeholder="Player Image"
                         value={newPlayer.imgUrl}
                         onChange={handleNewPlayerChange}
                         />
-                        <button onClick={handleAddPlayer}>Add Player</button>
+                        <button type="button" onClick={handleAddPlayer}>Add Player</button>
                         </form>
                         
                     </div>
 
-                    {playersToDisplay.map((player) => (
-                        <div key={player.id}>
+                    {playersToDisplay.map((player, index) => (
+                        <div key={player.id || index}>
                             <h3>{player.name}</h3>
                             <button onClick={() => handleViewPlayer(player)}>
                                 View Details
