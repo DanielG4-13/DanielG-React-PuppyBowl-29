@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {Routes, Route, Link } from 'react-router-dom'
 import './App.css'
-import AllPlayers from './components/allplayers'
+import AllPlayers from './components/Allplayers'
 
 function App() {
   const [count, setCount] = useState(0)
