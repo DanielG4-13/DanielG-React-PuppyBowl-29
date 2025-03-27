@@ -21,12 +21,12 @@ export async function fetchSinglePlayer(id) {
         console.error(error)
     }
 }
-export async function fetchNewPlayer(playerData) {
+export async function fetchNewPlayer(player) {
     try {
         const response= await fetch(`${baseURL}/players`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(playerData),
+            body: JSON.stringify(player),
         })
         const result = await response.json();
         console.log(result);

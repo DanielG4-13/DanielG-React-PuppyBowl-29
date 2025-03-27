@@ -9,6 +9,9 @@ const AllPlayers = () => {
     const [searchParam, setSearchParam] = useState("");
     const [selectedPlayer, setSelectedPlayer] = useState(null); 
     const [newPlayer, setNewPlayer] = useState(""); 
+    const [name, setName] = useState(""); 
+    const [breed, setbreed] = useState(""); 
+    const [imgUrl, setimgUrl] = useState(""); 
 
     useEffect(() => {
         async function getAllPlayers() {
@@ -43,6 +46,7 @@ const AllPlayers = () => {
 
     const handleAddPlayer = async () => {
         try {
+            const newPlayer= {name, breed, imgUrl}
             const addedPlayer = await fetchNewPlayer(newPlayer);
             console.log("Player added successfully:", addedPlayer);
             setNewPlayer(addedPlayer); 
@@ -87,7 +91,8 @@ const AllPlayers = () => {
                     </div>
 
                     <div>
-                        <h3>Add New Player</h3>
+                        <form>
+                            <h3>Add New Player</h3>
                         <input
                             type="text"
                             name="name"
@@ -102,7 +107,7 @@ const AllPlayers = () => {
                             value={newPlayer.breed}
                             onChange={handleNewPlayerChange}
                         />
-                         <input
+                         {/* <input
                             type="text"
                             name="id"
                             placeholder="Player ID"
@@ -115,8 +120,17 @@ const AllPlayers = () => {
                             placeholder="Player Status"
                             value={newPlayer.status}
                             onChange={handleNewPlayerChange}
+                        /> */}
+                        <input
+                        type="img"
+                        name="imgUrl"
+                        placeholder="Player Image"
+                        value={newPlayer.imgUrl}
+                        onChange={handleNewPlayerChange}
                         />
                         <button onClick={handleAddPlayer}>Add Player</button>
+                        </form>
+                        
                     </div>
 
                     {playersToDisplay.map((player) => (
